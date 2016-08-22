@@ -9,7 +9,6 @@
 	Hello world!  ### [Mosaic Web] ### 
 </h1>
 
-
 <h2>${result}</h2>
 
 </body>
