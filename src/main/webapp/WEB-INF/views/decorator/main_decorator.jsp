@@ -447,10 +447,10 @@
 		</aside>
 
 		<!-- Content Wrapper. Contains page content -->
-		<div class="content-wrapper">
+		<div class="content-wrapper" style="border: 2px solid red;">
 
 
-			<section class="content">
+			<section class="content" style="border: 2px solid blue;">
 				<!-- ################## -->
 				<!-- START Main Content -->
 				<!-- ################## -->
