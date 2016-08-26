@@ -2,28 +2,47 @@
 	pageEncoding="UTF-8"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>   
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <html>
+<!-- Bootstrap 3.3.4 -->
+<link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css" />
 <head>
 <title>readPage.jsp</title>
 <script type="text/javascript" src="/resources/js/upload.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+
 <!-- Main content -->
-    <style type="text/css">
-    .popup {position: absolute;}
-    .back { background-color: gray; opacity:0.5; width: 100%; height: 300%; overflow:hidden;  z-index:1101;}
-    .front { 
-       z-index:1110; opacity:1; boarder:1px; margin: auto; 
-      }
-     .show{
-       position:relative;
-       max-width: 1200px; 
-       max-height: 800px; 
-       overflow: auto;       
-     } 
-  	
-    </style>
+<style type="text/css">
+.popup {
+	position: absolute;
+}
+
+.back {
+	background-color: gray;
+	opacity: 0.5;
+	width: 100%;
+	height: 300%;
+	overflow: hidden;
+	z-index: 1101;
+}
+
+.front {
+	z-index: 1110;
+	opacity: 1;
+	boarder: 1px;
+	margin: auto;
+}
+
+.show {
+	position: relative;
+	max-width: 1200px;
+	max-height: 800px;
+	overflow: auto;
+}
+</style>
 </head>
 <body>
 
@@ -32,9 +51,10 @@
 		<img id="popup_img">
 	</div>
 
-	<div class="row"><!-- grid Bootstrap -->
+	<div class="row">
+		<!-- grid Bootstrap -->
 		<!-- left column -->
-		<div class="col-md-12">
+		<div class="col-md-6">
 			<!-- general form elements -->
 			<div class="box box-primary">
 				<div class="box-header">
@@ -44,9 +64,9 @@
 
 				<form role="form" action="modifyPage" method="post">
 
-					<input type='hidden' name='bno' value="${boardVO.bno}"> <input
-						type='hidden' name='page' value="${cri.page}"> <input
-						type='hidden' name='perPageNum' value="${cri.perPageNum}">
+					<input type='hidden' name='bno' value="${boardVO.bno}"> 
+					<input type='hidden' name='page' value="${cri.page}"> 
+					<input type='hidden' name='perPageNum' value="${cri.perPageNum}">
 					<input type='hidden' name='searchType' value="${cri.searchType}">
 					<input type='hidden' name='keyword' value="${cri.keyword}">
 
@@ -54,19 +74,16 @@
 
 				<div class="box-body">
 					<div class="form-group">
-						<label for="exampleInputEmail1">Title</label> <input type="text"
-							name='title' class="form-control" value="${boardVO.title}"
-							readonly="readonly">
+						<label for="exampleInputEmail1">Title</label> 
+						<input type="text" name='title' class="form-control" value="${boardVO.title}" readonly="readonly">
 					</div>
 					<div class="form-group">
 						<label for="exampleInputPassword1">Content</label>
-						<textarea class="form-control" name="content" rows="3"
-							readonly="readonly">${boardVO.content}</textarea>
+						<textarea class="form-control" name="content" rows="3" readonly="readonly">${boardVO.content}</textarea>
 					</div>
 					<div class="form-group">
-						<label for="exampleInputEmail1">Writer</label> <input type="text"
-							name="writer" class="form-control" value="${boardVO.writer}"
-							readonly="readonly">
+						<label for="exampleInputEmail1">Writer</label> 
+						<input type="text" name="writer" class="form-control" value="${boardVO.writer}" readonly="readonly">
 					</div>
 				</div>
 				<!-- /.box-body -->
@@ -83,14 +100,16 @@
 						<button type="submit" class="btn btn-warning" id="modifyBtn">Modify</button>
 						<button type="submit" class="btn btn-danger" id="removeBtn">REMOVE</button>
 					</c:if>
-					<button type="submit" class="btn btn-primary" id="goListBtn">GO
-						LIST</button>
+					<button type="submit" class="btn btn-primary" id="goListBtn">GO	LIST</button>
 				</div>
 
 			</div>
 			<!-- /.box -->
 		</div>
 		<!--/.col (left) -->
+		<div class="col-md-6">
+			<img class="img-responsive img-circle" width="50%" alt="xxx" src="http://www.loremflickr.com/200/200/dog" />
+		</div>
 
 	</div>
 	<!-- /.row -->
@@ -140,8 +159,7 @@
 			<ul class="timeline">
 				<!-- timeline time label -->
 				<li class="time-label" id="repliesDiv"><span class="bg-green">
-						Replies List <small id='replycntSmall'> [
-							${boardVO.replycnt} ] </small>
+						Replies List <small id='replycntSmall'> [ ${boardVO.replycnt} ] </small>
 				</span></li>
 			</ul>
 
@@ -165,7 +183,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title"></h4>
+					<h4 class="modal-title">댓글 수정 및 삭제</h4>
 				</div>
 				<div class="modal-body" data-rno>
 					<p>
@@ -185,18 +203,20 @@
 
 
 	<script id="templateAttach" type="text/x-handlebars-template">
-	<li data-src='{{fullName}}'>
-  		<span class="mailbox-attachment-icon has-img"><img src="{{imgsrc}}" alt="Attachment"></span>
-  			<div class="mailbox-attachment-info">
-				<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
-		</span>
-  			</div>
-	</li>                
-</script>  
+		<li data-src='{{fullName}}'>
+  			<span class="mailbox-attachment-icon has-img">
+				<img src="{{imgsrc}}" alt="Attachment">
+			</span>
+  				<div class="mailbox-attachment-info">
+					<a href="{{getLink}}" class="mailbox-attachment-name">{{fileName}}</a>
+			</span>
+  				</div>
+		</li>                
+	</script>
 
 
-          
-	<script id="template" type="text/x-handlebars-template">
+	<!-- 댓글 하나를 작동하는 템플레이트 -->
+	<script id="template" type="text/x-handlebars-template"> 
 		{{#each .}}
 	        <li class="replyLi" data-rno={{rno}}>
              <i class="fa fa-forward bg-blue"></i>
@@ -214,9 +234,9 @@
 	            </div>			
            </li>
         {{/each}}
-	</script>  
+	</script>
 
-<script>
+	<script>
 
 	
 	Handlebars.registerHelper("eqReplyer", function(replyer, block) {
@@ -303,7 +323,7 @@
 	});
 
 	$("#replyAddBtn").on("click", function() {
-		alert("replyAddBtn clicked...");
+// 		alert("replyAddBtn clicked...");
 
 		var replyerObj = $("#newReplyWriter");
 		var replytextObj = $("#newReplyText");
@@ -397,7 +417,7 @@
 </script>
 
 
-<script>
+	<script>
 $(document).ready(function(){
 	
 	var formObj = $("form[role='form']");

@@ -450,11 +450,17 @@
 		<div class="content-wrapper" style="border: 2px solid red;">
 
 
-			<section class="content" style="border: 2px solid blue;">
+			<section class="content " style="border: 2px solid blue;">
 				<!-- ################## -->
 				<!-- START Main Content -->
 				<!-- ################## -->
+				
+				<div class="container-fluid">
+
 				<sitemesh:write property="body" />
+					
+				</div>
+				
 				<!-- ################## -->
 				<!-- END   Main Content -->
 				<!-- ################## -->

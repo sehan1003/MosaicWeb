@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>addReply.jsp</title>
+<title>modifyReply.jsp</title>
 	
 	<!-- Bootstrap 3.3.4 -->
 	<link href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -46,12 +46,11 @@
 			<button id="replylist" class="btn btn-primary">댓글 조회</button>
 		</div>
 		<div class="panel-body">
-			<ul class="pagination">
-				
-			</ul>
 		</div>
 		<div class="panel-footer">
+			<ul class="pagination">
 
+			</ul>
 		</div>
 		
 	</div>
@@ -61,13 +60,18 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
+					<span class="close" data-dismiss="modal"><i class="fa fa-backward fa-spin"></i>&times;</span>
 					<h2 class="modal-title">댓글 수정 & 삭제</h2>
 				</div>
 				<div class="modal-body">
-					<input type="text">
+					<input id="replyprompt" class="form-control" type="text">
 				</div>
 				<div class="modal-footer">
-					<button id="btnModify" class="btn btn-primary">수정</button><button id="btnCancel" class="btn btn-danger">취소</button>
+					<div class="btn-group">
+						<button id="modify" class="btn btn-primary">수정</button>
+						<button id="delete" class="btn btn-default">삭제</button>
+						<button class="btn btn-danger" data-dismiss="modal">취소</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -108,10 +112,9 @@
 		        $('#reply .panel-body').html(str);
 		        
 		        $('.modify').on('click', function() {
-		           var str = "rno=" +$(this).attr("data-rno");
-		               str += "bno=" +$(this).attr("data-bno");
-		               str += "replytext=" +$(this).attr("data-replytext");
-		              
+		           var rno = $(this).attr("data-rno");
+		           var replytext= $(this).attr("data-replytext");
+			       $('#replyprompt').val(replytext).attr('data-rno', rno);
 	// 	           alert(str);  
 // 				if(confirm(str)){ //confirm은 true or false를 리턴해줌
 // 					alert("확인 클릭");
@@ -123,30 +126,44 @@
 // 				if(text != null){
 // 					alert(text);
 // 				}
-	        });
+	     		});
 		}
 		function printFooter(pageMaker) {
-		     console.log("pageMaker()...");
+			 console.log("printFooter(...)...");
 		     console.dir(pageMaker);
 		      
 //		     var str = JSON.stringify(pageMaker);
 		     var str ="";
-		      
-		     pageMaker.prev = true;
-		     if(pageMaker.prev)
-		           str += '<li><a href="#">' + (pageMaker.startPage -1) + "prev</a></li>";
 		     
-		     for(var i=pageMaker.startPage; i<=10; i++) {
-//		     for(var i=pageMaker.startPage; i<=pageMaker.endPage; i++) {
-		        str += '<li><a href="#">' + i + "</a></li>";
+		     if(pageMaker.prev)
+		           str += '<li><a href="#" data-num=' + (1) + ">맨앞</a></li>";
+		           
+		     if(pageMaker.prev)
+		           str += '<li><a href="#" data-num="' + (pageMaker.startPage -1) + '">' + (pageMaker.startPage -1) + "prev</a></li>";
+		     
+// 		     for(var i=pageMaker.startPage; i<=10; i++) {
+		     for(var i=pageMaker.startPage; i<=pageMaker.endPage; i++) {
+		        str += '<li><a href="#" data-num="' + i + '">' + i + "</a></li>";
 		     }
 		      
-		     pageMaker.next = true;
 		     if(pageMaker.next)
-		           str += '<li><a href="#">' + (pageMaker.endPage +1) + "next</a></li>";
-
+		           str += '<li><a href="#" data-num="' + (pageMaker.endPage + 1) + '">' + (pageMaker.endPage + 1 ) + "next</a></li>";
+		           
+		     if(pageMaker.next)
+			       str += '<li><a href="#" data-num='+ (pageMaker.totalPage) + ">맨뒤</a></li>";
 	         
 	         $('#reply .panel-footer .pagination').html(str);
+	         
+	         $('.pagination li > a').on('click', function(event) {
+	        	 
+	         	event.preventDefault();
+	        	 
+	        	var num = $(this).attr('data-num');
+				alert("num = " + num);
+				
+				page = num;
+				getPage(page);
+			});
 	      }
 		
 		function getPage(page) {//캐쉬 때문에 날짜로 계속 변경시켜줘야함
@@ -200,6 +217,58 @@
 			getPage(page);
 			
 		});
+		
+		$('#myModal #modify').on('click', function() {
+// 			alert("수정");
+			var rno = $('#replyprompt').attr('data-rno');
+			var replytext = $('#replyprompt').val();
+			console.log("rno = " + rno + ", replytext = " + replytext);			
+			
+			$.ajax({
+				type : "PUT",
+				url : "/replies/" + rno,
+				headers : {
+					"Content-Type" : "application/json"
+				},
+				processData : false,
+				data : JSON.stringify ({
+					replytext : replytext
+				}),
+				success : function(result) {
+					console.log(result);
+					if(result == "SUCCESS"){
+						getPage(page);
+					}
+						alert(result);
+				}
+			});
+			
+			$('#myModal').modal('hide');
+		});
+		
+		$('#myModal #delete').on('click', function() {
+	//	      alert("delete");
+		      var rno = $('#replyprompt').attr('data-rno');
+		      console.log("rno=" + rno);
+		      
+		      $.ajax({
+		         type : "DELETE",
+		         url : "/replies/" + rno,
+		         headers : {
+		            "Content-Type" : "application/json"
+		         },
+		         processData : false,
+		         success : function(result) {
+		            if (result == "SUCCESS")
+		               getPage(page);
+		            
+		            alert(result);
+		         }
+		      })
+		      
+		      $('#myModal').modal('hide');
+		});
+
 	</script>
 	
 </body>

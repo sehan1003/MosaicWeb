@@ -15,6 +15,12 @@ public class PageMaker {
 	private int displayPageNum = 10;
 	
 	private Criteria cri;
+	
+	private int totalPage;
+
+	public int getTotalPage() {
+		return totalPage;
+	}
 
 
 	public void setCri(Criteria cri) {
@@ -32,6 +38,8 @@ public class PageMaker {
 		endPage = (int) (Math.ceil(cri.getPage() / (double)displayPageNum ) * displayPageNum);
 		
 		startPage = (endPage - displayPageNum) + 1;
+		
+		totalPage = (int) (Math.ceil(totalCount / (double) cri.getPerPageNum()));
 		
 		int tempEndPage = (int)(Math.ceil(totalCount / (double)cri.getPerPageNum()));
 		
